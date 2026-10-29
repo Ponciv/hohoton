@@ -1,0 +1,188 @@
+/* Палитра на основе предоставленного изображения */
+:root {
+    --color-rust: #B7472A;       /* Ржавый (основной акцент, кнопки) */
+    --color-rust-hover: #9a3a21; /* Темнее для ховера */
+    --color-chrome: #BFC4C7;     /* Хром (светлый фон, рамки) */
+    --color-graphite: #20252B;   /* Графит (темный текст, подвал) */
+    --color-bg: #F4F5F6;         /* Очень светлый фон для контраста */
+    --color-card: #FFFFFF;       /* Белый для карточек */
+    --color-text-light: #6B7280;
+    
+    --success: #10B981;
+    --danger: #EF4444;
+    --warning: #F59E0B;
+    
+    --radius: 8px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', 'Segoe UI', Tahoma, sans-serif; }
+body { background-color: var(--color-bg); color: var(--color-graphite); line-height: 1.6; display: flex; flex-direction: column; min-height: 100vh; }
+.container { max-width: 1200px; margin: 0 auto; padding: 0 20px; width: 100%; }
+main { flex: 1; }
+
+/* --- Кнопки --- */
+.btn { padding: 10px 20px; border: none; border-radius: var(--radius); cursor: pointer; font-size: 15px; font-weight: 600; transition: all 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+.btn-primary { background: var(--color-rust); color: #fff; }
+.btn-primary:hover { background: var(--color-rust-hover); }
+.btn-outline { background: transparent; border: 2px solid var(--color-chrome); color: var(--color-graphite); }
+.btn-outline:hover { border-color: var(--color-rust); color: var(--color-rust); }
+.btn-success { background: var(--success); color: white; }
+.btn-danger { background: transparent; border: 1px solid var(--color-rust); color: var(--color-rust); }
+.btn-danger:hover { background: var(--color-rust); color: white; }
+.btn-sm { padding: 6px 12px; font-size: 13px; }
+.w-100 { width: 100%; }
+
+/* --- Шапка --- */
+.header { background: var(--color-graphite); padding: 18px 0; position: sticky; top: 0; z-index: 100; }
+.header-content { display: flex; justify-content: space-between; align-items: center; }
+.logo { font-size: 22px; font-weight: 800; color: #fff; cursor: pointer; letter-spacing: 0.5px; text-transform: uppercase; display: flex; align-items: center; gap: 10px;}
+.logo span { color: var(--color-rust); }
+.auth-status { display: flex; align-items: center; gap: 15px; color: #fff; }
+.auth-status span { cursor: pointer; transition: color 0.2s; }
+.auth-status span:hover { color: var(--color-chrome); }
+
+/* --- Панель фильтров --- */
+.catalog-header { display: flex; justify-content: space-between; align-items: center; margin: 30px 0 20px; }
+.catalog-controls { display: flex; gap: 12px; margin-bottom: 25px; flex-wrap: wrap; background: var(--color-card); padding: 15px; border-radius: var(--radius); border: 1px solid var(--color-chrome); }
+.catalog-controls input, .catalog-controls select { padding: 10px 14px; border: 1px solid var(--color-chrome); border-radius: var(--radius); font-size: 14px; outline: none; background: #fff; color: var(--color-graphite); transition: border-color 0.2s; }
+.catalog-controls input:focus, .catalog-controls select:focus { border-color: var(--color-rust); }
+.catalog-controls input { flex-grow: 1; min-width: 200px; }
+
+/* --- Сетка и Карточки --- */
+.projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px; }
+.card { background: var(--color-card); border-radius: var(--radius); padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); border: 1px solid var(--color-chrome); display: flex; flex-direction: column; }
+.card h3 { font-size: 18px; margin-bottom: 8px; color: var(--color-graphite); }
+.card .author { font-size: 13px; color: var(--color-text-light); margin-bottom: 15px; display: flex; align-items: center; gap: 6px; }
+.card .desc { font-size: 14px; margin-bottom: 20px; flex-grow: 1; color: #4B5563; }
+
+/* --- Индикаторы (Светящиеся точки) --- */
+.status-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+.status-dot.open { background-color: var(--success); box-shadow: 0 0 6px var(--success); }
+.status-dot.closed { background-color: var(--danger); box-shadow: 0 0 6px var(--danger); }
+
+/* --- Вакансии --- */
+.vacancy { background: var(--color-bg); padding: 14px; border-radius: var(--radius); margin-bottom: 10px; border: 1px solid var(--color-chrome); }
+.vacancy-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.vacancy-info { font-size: 14px; font-weight: 600; color: var(--color-graphite); }
+.vacancy-seats { font-size: 12px; color: var(--color-text-light); font-weight: normal; margin-top: 2px; }
+.vacancy-skills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+
+/* --- Теги --- */
+.tag { display: inline-block; background: rgba(183, 71, 42, 0.1); color: var(--color-rust); padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; }
+
+/* --- Состав команды --- */
+.team-composition { margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--color-chrome); }
+.team-composition h4 { font-size: 13px; color: var(--color-text-light); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;}
+.team-list { display: flex; flex-wrap: wrap; gap: 8px; }
+.team-item { background: var(--color-chrome); color: var(--color-graphite); padding: 4px 10px; border-radius: 6px; font-size: 13px; font-weight: 600; }
+
+/* --- Заявки --- */
+.applications-block { margin-top: 15px; border-top: 1px solid var(--color-chrome); padding-top: 15px; }
+.applications-block h4 { font-size: 14px; margin-bottom: 12px; color: var(--color-graphite); }
+.app-filters { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+.filter-btn { padding: 5px 12px; font-size: 12px; border-radius: 20px; border: 1px solid var(--color-chrome); background: white; cursor: pointer; color: var(--color-text-light); font-weight: 600; transition: all 0.2s; }
+.filter-btn.active { background: var(--color-rust); color: white; border-color: var(--color-rust); }
+.app-item { background: var(--color-bg); padding: 14px; border-radius: var(--radius); margin-bottom: 10px; font-size: 14px; border: 1px solid var(--color-chrome); }
+.app-user { font-weight: 700; margin-bottom: 4px; color: var(--color-graphite); }
+.app-role { font-size: 12px; color: var(--color-text-light); margin-bottom: 8px; }
+.app-msg { font-style: italic; color: #4B5563; margin: 8px 0; padding-left: 10px; border-left: 3px solid var(--color-chrome); }
+.app-skills { margin: 8px 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.app-actions { display: flex; gap: 8px; margin-top: 12px; }
+
+/* --- Модалки --- */
+.modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(32, 37, 43, 0.7); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(2px); }
+.modal.active { display: flex; }
+.modal-content { background: var(--color-card); padding: 30px; border-radius: var(--radius); width: 100%; max-width: 480px; position: relative; max-height: 90vh; overflow-y: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+.close { position: absolute; top: 15px; right: 20px; font-size: 28px; cursor: pointer; color: var(--color-text-light); transition: color 0.2s; }
+.close:hover { color: var(--color-rust); }
+
+/* --- Формы --- */
+.form-group { margin-bottom: 18px; }
+.form-group label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: var(--color-graphite); }
+.form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px; border: 1px solid var(--color-chrome); border-radius: var(--radius); font-size: 15px; outline: none; background: #fff; color: var(--color-graphite); }
+.form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--color-rust); box-shadow: 0 0 0 3px rgba(183, 71, 42, 0.15); }
+
+/* --- Дропдаун навыков --- */
+.skills-dropdown { position: relative; }
+.skills-input-wrapper { display: flex; flex-wrap: wrap; gap: 6px; padding: 8px; border: 1px solid var(--color-chrome); border-radius: var(--radius); min-height: 46px; cursor: text; background: #fff; }
+.skills-input-wrapper:focus-within { border-color: var(--color-rust); box-shadow: 0 0 0 3px rgba(183, 71, 42, 0.15); }
+.selected-tags { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.selected-tag { background: var(--color-chrome); color: var(--color-graphite); padding: 3px 10px; border-radius: 6px; font-size: 12px; display: flex; align-items: center; gap: 6px; font-weight: 600;}
+.selected-tag span { cursor: pointer; font-weight: bold; color: var(--color-text-light); }
+.selected-tag span:hover { color: var(--danger); }
+.skills-input-wrapper input { border: none !important; outline: none !important; padding: 2px !important; flex-grow: 1; min-width: 60px; box-shadow: none !important; font-size: 14px; }
+.skills-options { position: absolute; top: 100%; left: 0; right: 0; background: white; border: 1px solid var(--color-chrome); border-radius: 0 0 var(--radius) var(--radius); max-height: 200px; overflow-y: auto; z-index: 10; display: none; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+.skills-options.open { display: block; }
+.skills-option { padding: 10px 14px; cursor: pointer; font-size: 14px; }
+.skills-option:hover { background: var(--color-bg); }
+.skills-option.add-new { color: var(--color-rust); font-weight: 600; border-top: 1px solid var(--color-chrome); }
+
+/* --- Редактор вакансий --- */
+.edit-vacancy-item { background: var(--color-bg); padding: 15px; border-radius: var(--radius); margin-bottom: 12px; border: 1px solid var(--color-chrome); }
+.edit-vacancy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.remove-vacancy-btn { color: var(--danger); background: none; border: none; cursor: pointer; font-size: 13px; font-weight: 600; text-decoration: underline; padding: 0; margin-top: 5px; }
+.remove-vacancy-btn:hover { color: #cc0000; }
+
+/* --- Подвал --- */
+.footer { background: var(--color-graphite); color: var(--color-chrome); padding: 40px 0 20px; margin-top: 60px; }
+.footer-content { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; margin-bottom: 30px; }
+.footer-col h4 { color: #fff; margin-bottom: 15px; font-size: 16px; font-weight: 600; }
+.footer-col p { font-size: 14px; line-height: 1.8; color: var(--color-chrome); }
+.footer-col a { color: var(--color-chrome); text-decoration: none; transition: color 0.2s; }
+.footer-col a:hover { color: var(--color-rust); }
+.footer-bottom { text-align: center; padding-top: 20px; border-top: 1px solid rgba(191, 196, 199, 0.1); font-size: 13px; color: var(--color-text-light); }
+
+/* --- Адаптивность --- */
+@media (max-width: 768px) {
+    .projects-grid { grid-template-columns: 1fr; }
+    .catalog-header { flex-direction: column; align-items: flex-start; gap: 15px; }
+    .modal-content { padding: 20px; margin: 20px; }
+    .edit-vacancy-grid { grid-template-columns: 1fr; }
+}
+/* ==========================================
+   СТИЛИ ДЛЯ ВКЛАДОК (КАТАЛОГ / МОИ ПРОЕКТЫ / МОИ ЗАЯВКИ)
+   ========================================== */
+.tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 25px;
+    border-bottom: 2px solid var(--color-chrome);
+    padding-bottom: 10px;
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    background: transparent;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--color-text-light);
+    cursor: pointer;
+    border-radius: var(--radius) var(--radius) 0 0;
+    transition: all 0.2s ease;
+    position: relative;
+    top: 2px; /* Чтобы кнопка перекрывала нижнюю границу */
+}
+
+.tab-btn:hover {
+    color: var(--color-graphite);
+    background: rgba(183, 71, 42, 0.05); /* Легкий ржавый оттенок при наведении */
+}
+
+.tab-btn.active {
+    color: var(--color-rust);
+    border-bottom: 3px solid var(--color-rust);
+    background: transparent;
+}
+
+/* Адаптивность для мобильных (чтобы вкладки не разъезжались) */
+@media (max-width: 768px) {
+    .tabs {
+        gap: 5px;
+    }
+    .tab-btn {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+}

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Хакатон-Хаб</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="header">
+        <div class="container header-content">
+            <h1 class="logo" onclick="switchTab('catalog')">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L2 7L12 12L22 7L12 2Z" fill="#B7472A"/>
+                    <path d="M2 17L12 22L22 17" stroke="#BFC4C7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M2 12L12 17L22 12" stroke="#BFC4C7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Хакатон<span>Хаб</span>
+            </h1>
+            <div id="auth-status" class="auth-status"></div>
+        </div>
+    </header>
+
+    <!-- Навигация по вкладкам -->
+    <div class="container" id="main-tabs" style="display:none; margin-top: 20px;">
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('catalog')">Каталог проектов</button>
+            <button class="tab-btn" onclick="switchTab('my-projects')">Мои проекты</button>
+            <button class="tab-btn" onclick="switchTab('my-apps')">Мои заявки</button>
+        </div>
+    </div>
+
+    <main class="container">
+        <!-- Вкладка: Каталог -->
+        <section id="tab-catalog">
+            <div class="catalog-header">
+                <h2>Каталог проектов</h2>
+                <button id="create-project-btn" class="btn btn-primary" onclick="openModal('createProjectModal')" style="display: none;">+ Создать проект</button>
+            </div>
+            
+            <div id="catalog-controls-container"></div>
+            <div id="projects-grid" class="projects-grid"></div>
+        </section>
+
+        <!-- Вкладка: Мои проекты -->
+        <section id="tab-my-projects" style="display: none;">
+            <div class="catalog-header">
+                <h2>Мои проекты</h2>
+                <button class="btn btn-primary" onclick="openModal('createProjectModal')">+ Создать проект</button>
+            </div>
+            <div class="catalog-controls" style="margin-bottom: 20px;">
+                <input type="text" id="my-projects-search" placeholder="Поиск по моим проектам..." oninput="renderMyProjects()">
+                <select id="my-projects-status" onchange="renderMyProjects()">
+                    <option value="ALL">Все статусы</option>
+                    <option value="OPEN">Набор открыт</option>
+                    <option value="CLOSED">Набор закрыт</option>
+                </select>
+            </div>
+            <div id="my-projects-grid" class="projects-grid"></div>
+        </section>
+
+        <!-- Вкладка: Мои заявки -->
+        <section id="tab-my-apps" style="display: none;">
+            <h2>Мои заявки</h2>
+            <div id="my-apps-list"></div>
+        </section>
+    </main>
+
+    <!-- ПОДВАЛ -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-col">
+                    <h4>Хакатон-Хаб</h4>
+                    <p>Платформа для поиска команды и реализации самых смелых идей. Соединяем таланты в одном месте.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Контакты</h4>
+                    <p>Email: <a href="mailto:support@hackathonhub.ru">support@hackathonhub.ru</a></p>
+                    <p>Телефон: <a href="tel:880005553535">8 (800) 055-53-535</a></p>
+                    <p>Адрес: г. Москва, ул. Хакатонная, д. 1</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Поддержка</h4>
+                    <p>Работаем для вас ежедневно с 09:00 до 21:00.</p>
+                    <p>Если у вас возникли вопросы, напишите нам, и мы обязательно поможем!</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Хакатон-Хаб. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Модалка Профиля Пользователя (Просмотр) -->
+    <div id="viewProfileModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('viewProfileModal')">&times;</span>
+            <h2 id="view-profile-name">Имя</h2>
+            <p id="view-profile-email" style="color: #666; font-size: 14px; margin-bottom: 15px;"></p>
+            
+            <div class="form-group">
+                <label>О себе</label>
+                <p id="view-profile-bio" style="background: var(--color-bg); padding: 10px; border-radius: 6px; min-height: 40px;"></p>
+            </div>
+            
+            <div class="form-group">
+                <label>Навыки</label>
+                <div id="view-profile-skills" style="display: flex; flex-wrap: wrap; gap: 6px;"></div>
+            </div>
+            
+            <button class="btn btn-primary w-100" onclick="closeModal('viewProfileModal')">Закрыть</button>
+        </div>
+    </div>
+
+    <!-- Модалка Входа -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('loginModal')">&times;</span>
+            <h2>Вход</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="login-email" required placeholder="author@test.com">
+                </div>
+                <div class="form-group">
+                    <label>Пароль</label>
+                    <input type="password" id="login-password" required placeholder="123">
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Войти</button>
+            </form>
+            <div style="margin-top: 15px; font-size: 13px; color: #666; text-align: center; line-height: 1.5;">
+                <b>Тестовые аккаунты:</b><br>
+                Автор: author@test.com / 123<br>
+                Кандидат 1: cand1@test.com / 123<br>
+                Кандидат 2: cand2@test.com / 123
+            </div>
+        </div>
+    </div>
+
+    <!-- Модалка Регистрации -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('registerModal')">&times;</span>
+            <h2>Регистрация</h2>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label>Имя (Никнейм)</label>
+                    <input type="text" id="reg-name" required placeholder="Иван Иванов">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="reg-email" required placeholder="mail@example.com">
+                </div>
+                <div class="form-group">
+                    <label>Пароль</label>
+                    <input type="password" id="reg-password" required placeholder="******">
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Зарегистрироваться</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модалка Редактирования Своего Профиля -->
+    <div id="profileModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('profileModal')">&times;</span>
+            <h2>Мой профиль</h2>
+            <form id="profileForm">
+                <div class="form-group">
+                    <label>Имя (Никнейм)</label>
+                    <input type="text" id="prof-name" required>
+                </div>
+                <div class="form-group">
+                    <label>Email (логин)</label>
+                    <input type="email" id="prof-email" disabled style="background: #eee;">
+                </div>
+                <div class="form-group">
+                    <label>Краткое описание (О себе)</label>
+                    <textarea id="prof-bio" rows="3" placeholder="Например: Фронтенд-разработчик..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Мои навыки</label>
+                    <div id="profile-skills-container" class="skills-dropdown"></div>
+                </div>
+                <div class="form-group">
+                    <label>Новый пароль (оставьте пустым, чтобы не менять)</label>
+                    <input type="password" id="prof-password" placeholder="Новый пароль">
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Сохранить изменения</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модалка Создания Проекта -->
+    <div id="createProjectModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('createProjectModal')">&times;</span>
+            <h2>Новый проект</h2>
+            <form id="createProjectForm">
+                <div class="form-group">
+                    <label>Название</label>
+                    <input type="text" id="proj-title" required placeholder="Умная теплица">
+                </div>
+                <div class="form-group">
+                    <label>Описание</label>
+                    <textarea id="proj-desc" required rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Категория</label>
+                    <select id="proj-category" required>
+                        <option value="Web">Web</option>
+                        <option value="IoT">IoT</option>
+                        <option value="Mobile">Mobile</option>
+                        <option value="GameDev">GameDev</option>
+                        <option value="Дизайн">Дизайн</option>
+                        <option value="Другое">Другое</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Вакансия (Роль)</label>
+                    <input type="text" id="proj-role" required placeholder="Frontend-разработчик">
+                </div>
+                <div class="form-group">
+                    <label>Требуемые навыки</label>
+                    <div id="project-skills-container" class="skills-dropdown"></div>
+                </div>
+                <div class="form-group">
+                    <label>Количество мест</label>
+                    <input type="number" id="proj-seats" min="1" value="1" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Опубликовать</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модалка Редактирования Проекта -->
+    <div id="editProjectModal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <span class="close" onclick="closeModal('editProjectModal')">&times;</span>
+            <h2>Редактировать проект</h2>
+            <form id="editProjectForm">
+                <input type="hidden" id="edit-project-id">
+                <div class="form-group">
+                    <label>Название</label>
+                    <input type="text" id="edit-title" required>
+                </div>
+                <div class="form-group">
+                    <label>Описание</label>
+                    <textarea id="edit-desc" required rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Категория</label>
+                    <select id="edit-category" required>
+                        <option value="Web">Web</option>
+                        <option value="IoT">IoT</option>
+                        <option value="Mobile">Mobile</option>
+                        <option value="GameDev">GameDev</option>
+                        <option value="Дизайн">Дизайн</option>
+                        <option value="Другое">Другое</option>
+                    </select>
+                </div>
+                
+                <h3 style="font-size: 16px; margin: 20px 0 10px; color: #333;">Вакансии</h3>
+                <div id="edit-vacancies-list"></div>
+                <button type="button" class="btn btn-outline btn-sm" onclick="addVacancyToEdit()" style="margin-bottom: 15px;">+ Добавить вакансию</button>
+
+                <div style="display: flex; gap: 10px; margin-top: 15px;">
+                    <button type="submit" class="btn btn-primary w-100">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модалка Заявки -->
+    <div id="applyModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('applyModal')">&times;</span>
+            <h2>Подать заявку</h2>
+            <p id="apply-project-name" class="apply-project-name"></p>
+            <form id="applyForm">
+                <input type="hidden" id="apply-project-id">
+                <input type="hidden" id="apply-vacancy-id">
+                <div class="form-group">
+                    <label>Сопроводительное сообщение</label>
+                    <textarea id="apply-message" required rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Ваши навыки для этой роли</label>
+                    <div id="apply-skills-container" class="skills-dropdown"></div>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Отправить</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
